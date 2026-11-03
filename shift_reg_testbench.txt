@@ -1,0 +1,77 @@
+TESTBENCH:
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity shiftreg_tb is
+end shiftreg_tb;
+architecture Behavioral of shiftreg_tb is
+signal clk : STD_LOGIC := '0';
+signal rst : STD_LOGIC := '0';
+signal load : STD_LOGIC := '0';
+signal si : STD_LOGIC := '0';
+signal pi : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+signal po : STD_LOGIC_VECTOR(3 downto 0);
+signal mode : STD_LOGIC_VECTOR(1 downto 0) := "00";
+signal so : STD_LOGIC;
+begin
+-- DUT
+DUT : entity work.shiftreg
+port map (
+clk => clk,
+rst => rst,
+load => load,
+si => si,
+pi => pi,
+po => po,
+mode => mode,
+so => so
+);
+-- Clock
+clk <= not clk after 5 ns;
+-- Test process
+process
+begin
+-- RESET
+rst <= '1';
+wait for 20 ns;
+rst <= '0';
+wait for 20 ns;
+-- PIPO
+mode <= "00";
+pi <= "1011";
+wait for 20 ns;
+-- SISO
+mode <= "01";
+si <= '1';
+wait for 10 ns;
+si <= '0';
+wait for 10 ns;
+si <= '1';
+wait for 10 ns;
+si <= '1';
+wait for 10 ns;
+-- PISO
+mode <= "10";
+load <= '1';
+pi <= "1101";
+wait for 20 ns;
+load <= '0';
+wait for 10 ns;
+wait for 10 ns;
+wait for 10 ns;
+wait for 10 ns;
+-- SIPO
+mode <= "11";
+load <= '0';
+si <= '1';
+wait for 10 ns;
+si <= '0';
+wait for 10 ns;
+si <= '1';
+wait for 10 ns;
+si <= '1';
+wait for 10 ns;
+load <= '1';
+wait for 20 ns;
+wait;
+end process;
+end Behavioral;

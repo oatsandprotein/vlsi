@@ -1,0 +1,55 @@
+Testbench:
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity FIFO_tb is
+end FIFO_tb;
+architecture Behavioral of FIFO_tb is
+component FIFO
+Port (
+clk : in STD_LOGIC;
+rst : in STD_LOGIC;
+wren : in STD_LOGIC;
+rden : in STD_LOGIC;
+empty : out STD_LOGIC;
+full : out STD_LOGIC;
+dataout : out STD_LOGIC_VECTOR(7 downto 0)
+);
+end component;
+signal clk : STD_LOGIC := '0';
+signal rst : STD_LOGIC := '0';
+signal wren : STD_LOGIC := '0';
+signal rden : STD_LOGIC := '0';
+signal empty : STD_LOGIC;
+signal full : STD_LOGIC;
+signal dataout : STD_LOGIC_VECTOR(7 downto 0);
+begin
+uut: FIFO
+port map (
+clk => clk,
+rst => rst,
+wren => wren,
+rden => rden,
+empty => empty,
+full => full,
+dataout => dataout
+);
+-- Clock
+clk <= not clk after 5 ns;
+-- Test
+process
+begin
+-- Reset
+rst <= '1';
+wait for 20 ns;
+rst <= '0';
+-- Write
+wren <= '1';
+wait for 30 ns;
+wren <= '0';
+-- Read
+rden <= '1';
+wait for 30 ns;
+rden <= '0';
+wait;
+end process;
+end Behavioral;

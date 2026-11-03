@@ -1,0 +1,56 @@
+Testbench:
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity alu4bit_tb is
+end alu4bit_tb;
+architecture Behavioral of alu4bit_tb is
+component alu4bit
+Port (
+n1 : in STD_LOGIC_VECTOR (3 downto 0);
+n2 : in STD_LOGIC_VECTOR (3 downto 0);
+op : in STD_LOGIC_VECTOR (2 downto 0);
+res : out STD_LOGIC_VECTOR (3 downto 0);
+flag : out STD_LOGIC
+);
+end component;
+signal n1 : STD_LOGIC_VECTOR (3 downto 0) := "0000";
+signal n2 : STD_LOGIC_VECTOR (3 downto 0) := "0000";
+signal op : STD_LOGIC_VECTOR (2 downto 0) := "000";
+signal res : STD_LOGIC_VECTOR (3 downto 0);
+signal flag : STD_LOGIC;
+begin
+-- Instantiate ALU
+uut: alu4bit
+port map (
+n1 => n1,
+n2 => n2,
+op => op,
+res => res,
+flag => flag
+);
+-- Test cases
+stim_proc: process
+begin
+-- 1. Addition: 3 + 2 = 5
+n1 <= "0011";
+n2 <= "0010";
+op <= "000";
+wait for 20 ns;
+-- 2. Subtraction: 6 - 2 = 4
+n1 <= "0110";
+n2 <= "0010";
+op <= "001";
+wait for 20 ns;
+-- 3. AND: 12 AND 10 = 8
+n1 <= "1100";
+n2 <= "1010";
+op <= "010";
+wait for 20 ns;
+-- 4. XOR: 12 XOR 10 = 6
+n1 <= "1100";
+n2 <= "1010";
+op <= "100";
+wait for 20 ns;
+wait;
+end process;
+end Behavioral;

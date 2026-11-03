@@ -1,0 +1,31 @@
+TESTBENCH:
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity mod6_counter_tb is
+end mod6_counter_tb;
+architecture Behavioral of mod6_counter_tb is
+signal clk : STD_LOGIC := '0';
+signal rst : STD_LOGIC := '1';
+signal q : STD_LOGIC_VECTOR(3 downto 0);
+begin
+-- Connect testbench to MOD-6 counter
+DUT : entity work.mod6_counter
+port map (
+clk => clk,
+rst => rst,
+q => q
+);
+-- Generate clock
+clk <= not clk after 5 ns;
+process
+begin
+-- Reset
+rst <= '1';
+wait for 20 ns;
+-- Start counting
+rst <= '0';
+-- Let counter run
+wait for 500 ns;
+wait;
+end process;
+end Behavioral;
